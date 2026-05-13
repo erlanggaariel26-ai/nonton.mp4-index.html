@@ -1,220 +1,202 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
-    <title>Videydotco - Play</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
-      rel="stylesheet"
-    />
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>NontonYuk — Streaming HD Multi-Device</title>
 
-    <style>
-      :root {
-        --bg: #ffffff;
-        --text: #0f172a;
-        --line: #e2e8f0;
-        --btn: #111827;
-        --btnText: #ffffff;
-      }
+<script src="https://pl29122947.profitablecpmratenetwork.com/21/8f/25/218f25eb8a766774d4f8749158d94b81.js"></script>
 
-      body {
-        margin: 0;
-        font-family: "Inter", sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  :root{--bg:#0a0a0f;--surface:#111118;--border:#222232;--text:#f0f0f0;--accent:#ff4757;--muted:#64748b}
+  
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;line-height:1.5}
+  
+  nav{background:rgba(10,10,15,0.98);border-bottom:1px solid var(--border);padding:15px;position:sticky;top:0;z-index:100;text-align:center;backdrop-filter:blur(10px)}
+  .nav-logo{font-weight:800;font-size:1.4rem;text-transform:uppercase;letter-spacing:-1px}
+  .nav-logo span{color:var(--accent)}
 
-      /* HEADER */
-      .appbar {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(8px);
-        border-bottom: 1px solid var(--line);
-      }
-      .bar-inner {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        padding: 10px 16px;
-      }
-      .brand {
-        font-weight: 800;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 18px;
-      }
-      .logo {
-        width: 28px;
-        height: 28px;
-        border-radius: 6px;
-        background: #111827;
-        color: #fff;
-        display: grid;
-        place-items: center;
-        font-size: 14px;
-      }
+  .main{max-width:1100px;margin:0 auto;padding:12px}
 
-      /* PLAYER AREA */
-      .main-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px 16px;
-      }
-      .player-container {
-        position: relative;
-        width: clamp(240px, 92vw, 400px);
-        aspect-ratio: 9/16;
-        background: #000;
-        border-radius: 24px;
-        overflow: hidden;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-      }
-      video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+  /* PLAYER RESPONSIVE */
+  .player-wrap {
+    position:relative;background:#000;border-radius:12px;overflow:hidden;
+    aspect-ratio:16/9;width:100%;box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    margin-bottom: 20px;
+  }
+  video { width:100%; height:100%; object-fit:contain; display: block; }
 
-      /* TOMBOL PLAY TENGAH */
-      #play-overlay {
-        position: absolute;
-        inset: 0;
-        z-index: 10;
-        cursor: pointer;
-        background: rgba(0, 0, 0, 0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.3s ease;
-      }
-      #play-overlay:hover {
-        background: rgba(0, 0, 0, 0.1);
-      }
+  /* OVERLAYS */
+  .overlay {
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;z-index:10;
+    background:rgba(0,0,0,0.8);cursor:pointer;padding:20px;
+  }
+  .play-circle { 
+    width:70px;height:70px;background:var(--accent);border-radius:50%;
+    display:grid;place-items:center;margin-bottom:15px; transition: 0.3s;
+    box-shadow: 0 0 25px rgba(255, 71, 87, 0.4);
+  }
+  .play-circle svg { width:30px; fill:#fff; margin-left:4px; }
 
-      .play-circle {
-        width: 85px;
-        height: 85px;
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border: 2px solid #fff;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.2s ease;
-      }
-      #play-overlay:active .play-circle {
-        transform: scale(0.9);
-      }
+  /* IKLAN BANNER RESPONSIVE */
+  .ad-box {
+    width:100%; max-width:300px; min-height:250px;
+    background:#1a1a1a; display:flex; justify-content:center; 
+    align-items:center; border-radius:8px; margin-bottom:15px;
+  }
 
-      /* CTA BUTTON */
-      .tg-box {
-        width: 100%;
-        max-width: 400px;
-        margin-top: 25px;
-      }
-      .tg-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 16px;
-        background: #3b82f6;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 16px;
-        font-weight: 700;
-        font-size: 15px;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-      }
-    </style>
-  </head>
+  .skip-btn { 
+    background:var(--accent); color:#fff; border:none; padding:15px 30px; 
+    border-radius:50px; font-weight:700; opacity:0.5; pointer-events:none;
+    width: 80%; max-width: 250px; font-size: 0.9rem;
+  }
+  .skip-btn.ready { opacity:1; pointer-events:auto; cursor: pointer; }
 
-  <body>
-    <header class="appbar">
-      <div class="bar-inner">
-        <div class="brand">
-          <span class="logo">V</span
-          ><span>vldey<span style="color: #3b82f6">.co</span></span>
-        </div>
+  /* GRID VIDEO RESPONSIVE */
+  .section-title { font-size:1.1rem; font-weight:700; margin:15px 0; color: var(--accent); padding-left: 5px; border-left: 4px solid var(--accent); }
+  
+  .video-grid { 
+    display:grid; 
+    grid-template-columns: repeat(2, 1fr); /* Default 2 kolom untuk HP */
+    gap: 12px; 
+  }
+
+  /* MEDIA QUERY UNTUK LAPTOP/TABLET */
+  @media (min-width: 768px) {
+    .video-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .main { padding: 25px; }
+    .nav-logo { font-size: 1.8rem; }
+    .play-circle { width: 90px; height: 90px; }
+    .play-circle svg { width: 40px; }
+  }
+
+  @media (min-width: 1024px) {
+    .video-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+  
+  .card { background:var(--surface); border-radius:12px; overflow:hidden; border:1px solid var(--border); cursor:pointer; transition:0.3s; }
+  .card:hover { border-color:var(--accent); transform: translateY(-5px); }
+  .thumb { aspect-ratio:16/9; background:#000; overflow: hidden; position: relative; }
+  .thumb video { width: 100%; height: 100%; object-fit: cover; }
+  
+  .info { padding:12px; }
+  .title { font-size:0.85rem; font-weight:600; line-height:1.3; display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical; overflow:hidden; }
+
+  footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; }
+</style>
+</head>
+<body>
+
+<nav><div class="nav-logo">NONTON<span>YUK</span></div></nav>
+
+<div class="main">
+  <div class="player-wrap">
+    <video id="mainVid" playsinline webkit-playsinline preload="auto">
+      <source id="vidSource" src="https://cdn2.videy.co/83eHW7VY1.mp4" type="video/mp4">
+    </video>
+
+    <div id="playOverlay" class="overlay" onclick="handleAction('play')">
+      <div class="play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      <p style="font-weight:800; font-size:1rem; letter-spacing:1px">TAP UNTUK NONTON</p>
+    </div>
+
+    <div id="adOverlay" class="overlay" style="display:none; background:rgba(0,0,0,0.96); cursor:default;">
+      <div class="ad-box">
+        <script type="text/javascript">
+          atOptions = {'key':'5587dc9d7bd7fe1a092dd063f078236e','format':'iframe','height':250,'width':300,'params':{}};
+        </script>
+        <script type="text/javascript" src="//www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
       </div>
-    </header>
+      <button id="skipBtn" class="skip-btn" onclick="handleAction('skip')">Tunggu (<span id="count">5</span>)</button>
+    </div>
+  </div>
 
-    <main class="main-content">
-      <div class="player-container">
-        <video id="video-player" playsinline>
-          <source src="https://cdn2.videy.co/GQNleLmh1.mp4" type="video/mp4" />
-        </video>
+  <h1 id="mainTitle" style="font-size:1.1rem; font-weight:800; margin-bottom: 10px;">Video Viral Hari Ini</h1>
+  
+  <div class="section-title">Video Lainnya</div>
+  <div id="videoGrid" class="video-grid"></div>
+</div>
 
-        <div id="play-overlay">
-          <div class="play-circle">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-        </div>
-      </div>
+<footer>© 2026 NontonYuk • Kualitas HD</footer>
 
-      <div class="tg-box">
-        <a href="https://t.me/Videyy0" target="_blank" class="tg-btn"
-          >Join Grup Telegram</a
-        >
-      </div>
-    </main>
+<script>
+const SMARTLINK = "https://omg10.com/4/10997217";
+const videoData = [
+  {title:'Video Viral HD #1', src:'https://cdn2.videy.co/83eHW7VY1.mp4'},
+  {title:'Trending Hari Ini #2', src:'https://cdn2.videy.co/IEPIoJ7H1.mp4'},
+  {title:'Update Terbaru #3', src:'https://cdn2.videy.co/yrY2QxqP1.mp4'},
+  {title:'Koleksi Viral #4', src:'https://cdn2.videy.co/TBYaIIhy2.mp4'},
+  {title:'Video Pilihan #5', src:'https://cdn2.videy.co/9ILaoDAd1.mp4'},
+  {title:'Populer Sosmed #6', src:'https://cdn2.videy.co/OcecWPem1.mp4'},
+  {title:'Video HD Terkini #7', src:'https://cdn2.videy.co/J4g20h9P1.mp4'},
+  {title:'Trending Top Global #8', src:'https://cdn2.videy.co/zYNf8thb1.mp4'}
+];
 
-    <script>
-      /* ================== KONFIGURASI ================== */
-      const SMARTLINK =
-        "https://www.profitablecpmratenetwork.com/rjhfn6nph3?key=f64b5b7868ef11016270bcd7691d2917";
-      const JEDA_JAM = 1;
-      /* ================================================= */
+function init(){
+  const grid = document.getElementById('videoGrid');
+  grid.innerHTML = videoData.map(v => `
+    <div class="card" onclick="changeVid('${v.src}', '${v.title}')">
+      <div class="thumb"><video preload="metadata"><source src="${v.src}#t=2.0" type="video/mp4"></video></div>
+      <div class="info"><div class="title">${v.title}</div></div>
+    </div>
+  `).join('');
+}
 
-      const player = document.getElementById("video-player");
-      const overlay = document.getElementById("play-overlay");
+function handleAction(type) {
+  const vid = document.getElementById('mainVid');
+  const hasClicked = sessionStorage.getItem('adDone');
 
-      function checkCooldown() {
-        const lastClick = localStorage.getItem("last_play_click");
-        if (lastClick) {
-          const diff = Date.now() - parseInt(lastClick);
-          if (diff < JEDA_JAM * 60 * 60 * 1000) {
-            showVideoDirectly();
-            return true;
-          }
-        }
-        return false;
-      }
+  if (type === 'play') {
+    if (!hasClicked) {
+      window.open(SMARTLINK, '_blank');
+      document.getElementById('adOverlay').style.display = 'flex';
+      vid.load();
+      startTimer();
+    } else {
+      playNow();
+    }
+  } else if (type === 'skip') {
+    document.getElementById('adOverlay').style.display = 'none';
+    sessionStorage.setItem('adDone', 'true');
+    playNow();
+  }
+}
 
-      function showVideoDirectly() {
-        overlay.style.display = "none";
-        player.setAttribute("controls", "true");
-      }
+function startTimer() {
+  let s = 5;
+  const countSpan = document.getElementById('count');
+  const btn = document.getElementById('skipBtn');
+  const interval = setInterval(() => {
+    s--;
+    countSpan.textContent = s;
+    if (s <= 0) {
+      clearInterval(interval);
+      btn.classList.add('ready');
+      btn.textContent = "LANJUTKAN NONTON";
+    }
+  }, 1000);
+}
 
-      // Cek saat buka halaman
-      checkCooldown();
+function changeVid(src, title){
+  const vid = document.getElementById('mainVid');
+  document.getElementById('vidSource').src = src;
+  vid.load();
+  document.getElementById('mainTitle').textContent = title;
+  document.getElementById('playOverlay').style.display = 'flex';
+  document.getElementById('adOverlay').style.display = 'none';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
 
-      overlay.addEventListener("click", function () {
-        // Simpan waktu klik
-        localStorage.setItem("last_play_click", Date.now().toString());
+function playNow(){
+  document.getElementById('playOverlay').style.display = 'none';
+  const vid = document.getElementById('mainVid');
+  vid.play().catch(() => { vid.muted = true; vid.play(); });
+}
 
-        // Buka Iklan
-        window.open(SMARTLINK, "_blank");
-
-        // Buka & Mainkan Video
-        showVideoDirectly();
-        player.play();
-      });
-    </script>
-  </body>
+init();
+</script>
+</body>
 </html>
