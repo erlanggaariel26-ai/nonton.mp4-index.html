@@ -3,89 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>NontonYuk — Streaming HD Multi-Device</title>
+<title>NontonYuk — Streaming HD</title>
 
 <script src="https://pl29122947.profitablecpmratenetwork.com/21/8f/25/218f25eb8a766774d4f8749158d94b81.js"></script>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   *{margin:0;padding:0;box-sizing:border-box; -webkit-tap-highlight-color:transparent}
-  :root{--bg:#0a0a0f;--surface:#111118;--border:#222232;--text:#f0f0f0;--accent:#ff4757;--muted:#64748b}
+  :root{--bg:#050508;--surface:#101018;--border:#1f1f2e;--text:#f0f0f0;--accent:#ff4757}
   
-  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;line-height:1.5}
-  
-  nav{background:rgba(10,10,15,0.98);border-bottom:1px solid var(--border);padding:15px;position:sticky;top:0;z-index:100;text-align:center;backdrop-filter:blur(10px)}
-  .nav-logo{font-weight:800;font-size:1.4rem;text-transform:uppercase;letter-spacing:-1px}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
+  nav{background:rgba(5,5,8,0.9); border-bottom:1px solid var(--border); padding:15px; position:sticky; top:0; z-index:100; text-align:center; backdrop-filter:blur(10px)}
+  .nav-logo{font-weight:800; font-size:1.3rem; text-transform:uppercase; letter-spacing:-1px}
   .nav-logo span{color:var(--accent)}
 
-  .main{max-width:1100px;margin:0 auto;padding:12px}
+  .main{max-width:1000px; margin:0 auto; padding:12px}
 
-  /* PLAYER RESPONSIVE */
+  /* PLAYER AREA */
   .player-wrap {
-    position:relative;background:#000;border-radius:12px;overflow:hidden;
-    aspect-ratio:16/9;width:100%;box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    position:relative; background:#000; border-radius:12px; overflow:hidden;
+    aspect-ratio:16/9; width:100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     margin-bottom: 20px;
   }
-  video { width:100%; height:100%; object-fit:contain; display: block; }
+  video { width:100%; height:100%; object-fit:contain; display: block;}
 
-  /* OVERLAYS */
   .overlay {
-    position:absolute;inset:0;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;z-index:10;
-    background:rgba(0,0,0,0.8);cursor:pointer;padding:20px;
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; z-index:10;
+    background:rgba(0,0,0,0.7); cursor:pointer;
   }
   .play-circle { 
-    width:70px;height:70px;background:var(--accent);border-radius:50%;
-    display:grid;place-items:center;margin-bottom:15px; transition: 0.3s;
-    box-shadow: 0 0 25px rgba(255, 71, 87, 0.4);
-  }
-  .play-circle svg { width:30px; fill:#fff; margin-left:4px; }
-
-  /* IKLAN BANNER RESPONSIVE */
-  .ad-box {
-    width:100%; max-width:300px; min-height:250px;
-    background:#1a1a1a; display:flex; justify-content:center; 
-    align-items:center; border-radius:8px; margin-bottom:15px;
+    width:65px; height:65px; background:var(--accent); border-radius:50%;
+    display:grid; place-items:center; transition: 0.3s;
   }
 
-  .skip-btn { 
-    background:var(--accent); color:#fff; border:none; padding:15px 30px; 
-    border-radius:50px; font-weight:700; opacity:0.5; pointer-events:none;
-    width: 80%; max-width: 250px; font-size: 0.9rem;
-  }
-  .skip-btn.ready { opacity:1; pointer-events:auto; cursor: pointer; }
-
-  /* GRID VIDEO RESPONSIVE */
-  .section-title { font-size:1.1rem; font-weight:700; margin:15px 0; color: var(--accent); padding-left: 5px; border-left: 4px solid var(--accent); }
-  
-  .video-grid { 
-    display:grid; 
-    grid-template-columns: repeat(2, 1fr); /* Default 2 kolom untuk HP */
-    gap: 12px; 
-  }
-
-  /* MEDIA QUERY UNTUK LAPTOP/TABLET */
-  @media (min-width: 768px) {
-    .video-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
-    .main { padding: 25px; }
-    .nav-logo { font-size: 1.8rem; }
-    .play-circle { width: 90px; height: 90px; }
-    .play-circle svg { width: 40px; }
-  }
-
-  @media (min-width: 1024px) {
-    .video-grid { grid-template-columns: repeat(4, 1fr); }
+  /* ADS OVERLAY STYLE (Sesuai Gambar) */
+  .ad-container {
+    position: relative;
+    background: #11111b;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #222;
+    max-width: 320px;
+    width: 90%;
+    text-align: center;
   }
   
-  .card { background:var(--surface); border-radius:12px; overflow:hidden; border:1px solid var(--border); cursor:pointer; transition:0.3s; }
-  .card:hover { border-color:var(--accent); transform: translateY(-5px); }
-  .thumb { aspect-ratio:16/9; background:#000; overflow: hidden; position: relative; }
-  .thumb video { width: 100%; height: 100%; object-fit: cover; }
-  
-  .info { padding:12px; }
-  .title { font-size:0.85rem; font-weight:600; line-height:1.3; display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical; overflow:hidden; }
+  /* Tombol X Bulat di Pojok */
+  .close-x {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    width: 35px;
+    height: 35px;
+    background: #2a3b90;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 30;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  }
 
-  footer { text-align:center; padding:40px; color:var(--muted); font-size:0.8rem; }
+  .ad-label { font-size: 10px; color: #666; margin-bottom: 10px; text-transform: uppercase; }
+  
+  .ad-box-img {
+    width: 100%;
+    min-height: 250px;
+    background: #000;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .warning-text {
+    margin-top: 15px;
+    color: #ff4757;
+    font-size: 13px;
+    font-weight: 700;
+    display: none; /* Muncul setelah klik pertama */
+  }
+
+  /* GRID */
+  .section-title { font-size:1rem; font-weight:700; margin:15px 0; color: var(--accent); padding-left: 10px; border-left: 3px solid var(--accent); }
+  .video-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  @media (min-width: 768px) { .video-grid { grid-template-columns: repeat(4, 1fr); gap: 15px; } }
+  
+  .card { background:var(--surface); border-radius:10px; overflow:hidden; border:1px solid var(--border); cursor:pointer; }
+  .thumb { aspect-ratio:16/9; background:#000; position: relative; }
+  .thumb video { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+  .info { padding:10px; }
+  .title { font-size:0.8rem; font-weight:600; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+  footer { text-align:center; padding:30px; color:var(--muted); font-size:0.75rem; }
 </style>
 </head>
 <body>
@@ -94,52 +110,54 @@
 
 <div class="main">
   <div class="player-wrap">
-    <video id="mainVid" playsinline webkit-playsinline preload="auto">
+    <video id="mainVid" playsinline>
       <source id="vidSource" src="https://cdn2.videy.co/83eHW7VY1.mp4" type="video/mp4">
     </video>
 
-    <div id="playOverlay" class="overlay" onclick="handleAction('play')">
-      <div class="play-circle"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-      <p style="font-weight:800; font-size:1rem; letter-spacing:1px">TAP UNTUK NONTON</p>
+    <div id="playOverlay" class="overlay" onclick="handleAction('start')">
+      <div class="play-circle"><svg viewBox="0 0 24 24" width="30" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      <p style="margin-top:10px; font-weight:700; font-size:0.9rem">PUTAR VIDEO</p>
     </div>
 
-    <div id="adOverlay" class="overlay" style="display:none; background:rgba(0,0,0,0.96); cursor:default;">
-      <div class="ad-box">
-        <script type="text/javascript">
-          atOptions = {'key':'5587dc9d7bd7fe1a092dd063f078236e','format':'iframe','height':250,'width':300,'params':{}};
-        </script>
-        <script type="text/javascript" src="//www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
+    <div id="adOverlay" class="overlay" style="display:none; background:rgba(0,0,0,0.9); cursor:default;">
+      <div class="ad-container">
+        <div id="closeXBtn" class="close-x" onclick="handleAction('close')">✕</div>
+        <div class="ad-label">IKLAN</div>
+        
+        <div class="ad-box-img">
+           <script type="text/javascript">
+             atOptions = {'key':'5587dc9d7bd7fe1a092dd063f078236e','format':'iframe','height':250,'width':300,'params':{}};
+           </script>
+           <script type="text/javascript" src="//www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
+        </div>
+
+        <div id="warnMsg" class="warning-text">Klik ✕ sekali lagi!</div>
       </div>
-      <button id="skipBtn" class="skip-btn" onclick="handleAction('skip')">Tunggu (<span id="count">5</span>)</button>
     </div>
   </div>
 
-  <h1 id="mainTitle" style="font-size:1.1rem; font-weight:800; margin-bottom: 10px;">Video Viral Hari Ini</h1>
-  
-  <div class="section-title">Video Lainnya</div>
+  <div class="section-title">Video Terbaru</div>
   <div id="videoGrid" class="video-grid"></div>
 </div>
 
-<footer>© 2026 NontonYuk • Kualitas HD</footer>
-
 <script>
 const SMARTLINK = "https://omg10.com/4/10997217";
+let clickCount = 0; // Menghitung klik pada tombol X
+
 const videoData = [
-  {title:'Video Viral HD #1', src:'https://cdn2.videy.co/83eHW7VY1.mp4'},
-  {title:'Trending Hari Ini #2', src:'https://cdn2.videy.co/IEPIoJ7H1.mp4'},
-  {title:'Update Terbaru #3', src:'https://cdn2.videy.co/yrY2QxqP1.mp4'},
+  {title:'Video Viral 2026 #1', src:'https://cdn2.videy.co/83eHW7VY1.mp4'},
+  {title:'Trending Baru #2', src:'https://cdn2.videy.co/IEPIoJ7H1.mp4'},
+  {title:'Update Video #3', src:'https://cdn2.videy.co/yrY2QxqP1.mp4'},
   {title:'Koleksi Viral #4', src:'https://cdn2.videy.co/TBYaIIhy2.mp4'},
-  {title:'Video Pilihan #5', src:'https://cdn2.videy.co/9ILaoDAd1.mp4'},
-  {title:'Populer Sosmed #6', src:'https://cdn2.videy.co/OcecWPem1.mp4'},
-  {title:'Video HD Terkini #7', src:'https://cdn2.videy.co/J4g20h9P1.mp4'},
-  {title:'Trending Top Global #8', src:'https://cdn2.videy.co/zYNf8thb1.mp4'}
+  {title:'Pilihan Populer #5', src:'https://cdn2.videy.co/9ILaoDAd1.mp4'},
+  {title:'Viral Sosmed #6', src:'https://cdn2.videy.co/OcecWPem1.mp4'}
 ];
 
 function init(){
   const grid = document.getElementById('videoGrid');
   grid.innerHTML = videoData.map(v => `
     <div class="card" onclick="changeVid('${v.src}', '${v.title}')">
-      <div class="thumb"><video preload="metadata"><source src="${v.src}#t=2.0" type="video/mp4"></video></div>
+      <div class="thumb"><video preload="metadata" muted><source src="${v.src}#t=1.0" type="video/mp4"></video></div>
       <div class="info"><div class="title">${v.title}</div></div>
     </div>
   `).join('');
@@ -147,44 +165,38 @@ function init(){
 
 function handleAction(type) {
   const vid = document.getElementById('mainVid');
-  const hasClicked = sessionStorage.getItem('adDone');
+  const isDone = sessionStorage.getItem('adDone');
 
-  if (type === 'play') {
-    if (!hasClicked) {
+  if (type === 'start') {
+    if (!isDone) {
       window.open(SMARTLINK, '_blank');
       document.getElementById('adOverlay').style.display = 'flex';
       vid.load();
-      startTimer();
     } else {
       playNow();
     }
-  } else if (type === 'skip') {
-    document.getElementById('adOverlay').style.display = 'none';
-    sessionStorage.setItem('adDone', 'true');
-    playNow();
-  }
-}
-
-function startTimer() {
-  let s = 5;
-  const countSpan = document.getElementById('count');
-  const btn = document.getElementById('skipBtn');
-  const interval = setInterval(() => {
-    s--;
-    countSpan.textContent = s;
-    if (s <= 0) {
-      clearInterval(interval);
-      btn.classList.add('ready');
-      btn.textContent = "LANJUTKAN NONTON";
+  } 
+  
+  else if (type === 'close') {
+    clickCount++;
+    if (clickCount === 1) {
+      // Klik pertama: munculkan tulisan merah
+      document.getElementById('warnMsg').style.display = 'block';
+    } else {
+      // Klik kedua: tutup iklan dan putar video
+      document.getElementById('adOverlay').style.display = 'none';
+      sessionStorage.setItem('adDone', 'true');
+      playNow();
     }
-  }, 1000);
+  }
 }
 
 function changeVid(src, title){
   const vid = document.getElementById('mainVid');
   document.getElementById('vidSource').src = src;
   vid.load();
-  document.getElementById('mainTitle').textContent = title;
+  clickCount = 0; // Reset hitungan jika ganti video
+  document.getElementById('warnMsg').style.display = 'none';
   document.getElementById('playOverlay').style.display = 'flex';
   document.getElementById('adOverlay').style.display = 'none';
   window.scrollTo({top: 0, behavior: 'smooth'});
