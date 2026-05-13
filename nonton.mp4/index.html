@@ -2,224 +2,245 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>VidPlay — Streaming HD</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VidPlay — Tonton Video Gratis HD</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-    /* CSS OPTIMIZED */
-    *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    :root{
-        --bg:#050508;--surface:#101018;--border:#1f1f2e;--text:#f0f0f0;--accent:#3b82f6;--red:#ff4757;
-    }
-    body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
+/* CSS DASAR */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0f;--surface:#111118;--surface2:#1a1a24;
+  --border:#222232;--muted:#64748b;--text:#f0f0f0;
+  --accent:#3b82f6;--red:#ef4444;--green:#16a34a;
+}
+html,body{width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif}
+nav{position:sticky;top:0;z-index:100;background:rgba(10,10,15,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.nav-logo{font-weight:800;font-size:18px;letter-spacing:-.3px}.nav-logo span{color:var(--accent)}
 
-    /* NAVIGATION */
-    nav{position:sticky;top:0;z-index:1000;background:rgba(5,5,8,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:15px;text-align:center;}
-    .nav-logo{font-weight:800;font-size:1.4rem;text-transform:uppercase;letter-spacing:-1px}
-    .nav-logo span{color:var(--accent)}
+/* TATA LETAK */
+.main{max-width:1200px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr 300px;gap:16px;}
+@media(max-width:768px){.main{grid-template-columns:1fr;}}
 
-    /* LAYOUT */
-    .main{max-width:1100px;margin:0 auto;padding:12px;display:grid;grid-template-columns:1fr 320px;gap:20px;}
-    @media(max-width:900px){ .main{grid-template-columns:1fr;} }
+/* PLAYER & OVERLAY TRANSPARAN */
+.player-wrap{position:relative;background:#000;border-radius:14px;overflow:hidden;aspect-ratio:16/9;width:100%;}
+video{width:100%;height:100%;display:block;object-fit:contain}
 
-    /* PLAYER AREA */
-    .player-wrap{position:relative;background:#000;border-radius:12px;overflow:hidden;aspect-ratio:16/9;width:100%;box-shadow:0 10px 30px rgba(0,0,0,0.5);}
-    video{width:100%;height:100%;display:block;object-fit:contain}
+/* IKLAN TENGAH (MIDROLL) - DIBUAT TRANSPARAN */
+#midrollOverlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0.4); /* Transparan agar video kelihatan */
+  backdrop-filter:blur(4px);    /* Efek blur estetik */
+  z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+#midrollOverlay.hidden{display:none}
 
-    /* POPUP OVERLAY */
-    #popupOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center;z-index:99999;}
-    #popupBox{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:min(350px,90vw);padding:20px;text-align:center;position:relative;}
-    #popupCloseFab{
-        position:absolute;top:-15px;right:-15px;width:40px;height:40px;
-        background:#1e293b;border:2px solid #fff;border-radius:50%;
-        display:flex;align-items:center;justify-content:center;cursor:not-allowed;opacity:0.3;transition:0.3s;color:#fff;font-weight:bold;
-    }
-    #popupCloseFab.ready{opacity:1;background:var(--accent);cursor:pointer;box-shadow:0 0 15px var(--accent);}
+/* POPUP AWAL - DIBUAT TRANSPARAN */
+#popupOverlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.4); /* Transparan agar video kelihatan */
+  backdrop-filter:blur(4px);    /* Efek blur estetik */
+  display:flex;align-items:center;justify-content:center;z-index:999999;
+}
+#popupOverlay.hidden{display:none}
 
-    /* VIDEO LIST GRID */
-    .section-title{font-size:1rem;font-weight:700;margin:20px 0 10px;padding-left:10px;border-left:3px solid var(--accent)}
-    .video-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:12px;}
-    @media(min-width:600px){ .video-grid{grid-template-columns:repeat(3, 1fr);} }
+#popupBox{background:#111118;border:1px solid #222232;border-radius:14px;width:min(360px,92vw);position:relative;padding:15px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,0.5);}
 
-    .card{background:var(--surface);border-radius:10px;overflow:hidden;border:1px solid var(--border);transition:0.3s;cursor:pointer}
-    .card:hover{transform:translateY(-3px);border-color:var(--accent)}
-    .thumb-wrap{aspect-ratio:16/9;background:#000;position:relative;overflow:hidden}
-    .thumb-wrap video{width:100%;height:100%;object-fit:cover;opacity:0.6}
-    .card-info{padding:10px}
-    .card-title{font-size:0.85rem;font-weight:600;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* TOMBOL CLOSE & SKIP */
+#popupCloseFab{
+  position:absolute;top:-20px;right:-20px;width:44px;height:44px;
+  background:#0f172a;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;cursor:default;font-size:15px;color:#475569;z-index:1000002;border:2px solid #fff;
+}
+#popupCloseFab.ready{cursor:pointer;color:#fff;background:var(--accent);box-shadow:0 0 15px var(--accent);}
 
-    /* MIDROLL */
-    #midrollOverlay{position:absolute;inset:0;background:rgba(0,0,0,0.95);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;}
-    .hidden{display:none !important}
-    .btn-skip{background:#334155;color:#fff;border:none;padding:12px 25px;border-radius:8px;font-weight:700;margin-top:15px;cursor:pointer}
-    .btn-skip.ready{background:var(--accent)}
+.skip-btn{background:#1e293b;color:#475569;border:1px solid #334155;padding:12px 24px;border-radius:8px;font-weight:700;margin-top:15px;cursor:default;}
+.skip-btn.ready{background:var(--accent);color:#fff;cursor:pointer;}
+
+/* PLAYLIST */
+.related-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(160px, 1fr));gap:12px;margin-top:15px;}
+.rel-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s;}
+.rel-card.active{border-color:var(--accent)}
+.rel-thumb{aspect-ratio:16/9;background:#222;display:flex;align-items:center;justify-content:center;font-size:30px;}
+.rel-title{padding:8px;font-size:12px;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 </style>
 </head>
 <body>
 
 <div id="popupOverlay">
-    <div id="popupBox">
-        <div id="popupCloseFab" onclick="handlePopupClick()">✕</div>
-        <p style="font-size:11px;color:#64748b;margin-bottom:10px;letter-spacing:1px">SPONSORED AD</p>
-        <div style="min-height:250px; background:#000; border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
-            <script type="text/javascript">
-                atOptions = { 'key' : '5587dc9d7bd7fe1a092dd063f078236e', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
-        </div>
-        <p id="popupStatus" style="margin-top:15px; font-size:14px; font-weight:600;">Tunggu <span id="sec" style="color:var(--accent)">5</span> detik...</p>
+  <div id="popupBox">
+    <div id="popupCloseFab" onclick="handlePopupClick(event)">
+      <span id="popupFabInner">✕</span>
+      <svg viewBox="0 0 44 44" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
+        <circle cx="22" cy="22" r="19" fill="none" stroke="#1e293b" stroke-width="2.5"/>
+        <circle id="popupArc" cx="22" cy="22" r="19" fill="none" stroke="#3b82f6" stroke-width="2.5" stroke-dasharray="0 120" transform="rotate(-90 22 22)"/>
+      </svg>
     </div>
+    <div style="font-size:10px; color:var(--muted); margin-bottom:10px;">ADVERTISEMENT</div>
+    
+    <script type="text/javascript">
+      atOptions = { 'key' : '5587dc9d7bd7fe1a092dd063f078236e', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+    </script>
+    <script type="text/javascript" src="https://www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
+
+    <div id="popupInfo" style="font-size:12px; margin-top:15px; color:var(--muted);">Tunggu <b id="popupNum">5</b> detik</div>
+  </div>
 </div>
 
-<nav><div class="nav-logo">VID<span>PLAY</span></div></nav>
+<nav><div class="nav-logo">Vid<span>Play</span></div></nav>
 
 <div class="main">
-    <div class="content-left">
-        <div class="player-wrap">
-            <video id="mainVid" controls poster="">
-                <source id="vidSrc" src="https://cdn2.videy.co/83eHW7VY1.mp4" type="video/mp4">
-            </video>
+  <div class="video-section">
+    <div class="player-wrap">
+      <video id="mainVideo" controls poster="">
+        <source id="videoSrc" src="https://cdn2.videy.co/83eHW7VY1.mp4" type="video/mp4">
+      </video>
 
-            <div id="midrollOverlay" class="hidden">
-                <p style="font-weight:bold">Iklan sedang berlangsung...</p>
-                <div style="margin:15px 0">
-                    <script async="async" data-cfasync="false" src="https://pl29122188.profitablecpmratenetwork.com/ba3a9b5f88598e3d66f38ec2b3506a15/invoke.js"></script>
-                    <div id="container-ba3a9b5f88598e3d66f38ec2b3506a15"></div>
-                </div>
-                <button id="midrollBtn" class="btn-skip" onclick="handleMidrollClick()">Lewati Iklan (<span id="mSec">5</span>)</button>
-            </div>
-        </div>
+      <div id="midrollOverlay" class="hidden">
+        <div style="color:white; margin-bottom:15px; font-size:14px; font-weight:bold;">Iklan Sedang Berlangsung</div>
+        
+        <script async="async" data-cfasync="false" src="https://pl29122188.profitablecpmratenetwork.com/ba3a9b5f88598e3d66f38ec2b3506a15/invoke.js"></script>
+        <div id="container-ba3a9b5f88598e3d66f38ec2b3506a15"></div>
 
-        <div style="background:var(--surface); padding:15px; border-radius:12px; margin-top:15px; border:1px solid var(--border)">
-            <h1 id="vTitle" style="font-size:1.1rem">🎬 Viral omek</h1>
-            <p style="color:#64748b; font-size:0.8rem; margin-top:5px">Update 2026 • Kualitas HD</p>
-        </div>
-
-        <div class="section-title">Video Terbaru</div>
-        <div class="video-grid" id="gridV"></div>
+        <button id="mrSkipBtn" class="skip-btn" onclick="handleMidrollClick(event)">Lewati Iklan (<span id="mrNum">5</span>)</button>
+      </div>
     </div>
 
-    <div class="sidebar">
-        <div style="background:var(--surface); padding:15px; border-radius:12px; text-align:center; position:sticky; top:80px; border:1px solid var(--border)">
-            <p style="font-size:10px; color:#64748b; margin-bottom:10px">PROMOTED</p>
-            <script type="text/javascript">
-                atOptions = { 'key' : '5587dc9d7bd7fe1a092dd063f078236e', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
-            </script>
-            <script type="text/javascript" src="https://www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
-        </div>
+    <div style="background:var(--surface); padding:16px; border-radius:14px; margin-top:12px; border:1px solid var(--border);">
+      <h1 id="activeTitle" style="font-size:17px;">🎬 Viral omek</h1>
+      <p style="color:var(--muted); font-size:13px; margin-top:4px;">👁️ <span id="viewCount">45K</span> penonton</p>
     </div>
+
+    <h3 style="margin-top:20px; font-size:15px; margin-bottom:10px;">Video Terbaru</h3>
+    <div class="related-grid" id="videoGrid"></div>
+  </div>
+
+  <div class="sidebar">
+    <div style="background:var(--surface); padding:15px; border-radius:12px; border:1px solid var(--border); text-align:center;">
+      <p style="font-size:10px; color:var(--muted); margin-bottom:10px;">PROMOTED</p>
+      <div id="sidebar-ad">
+         <script type="text/javascript">
+           atOptions = { 'key' : '5587dc9d7bd7fe1a092dd063f078236e', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
+         </script>
+         <script type="text/javascript" src="https://www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-// SMARTLINK ADSTERRA SESUAI PERMINTAAN
-const SMARTLINK = "https://omg10.com/4/10997217";
+// SMARTLINK FINAL
+const SMARTLINK = 'https://omg10.com/4/10997217';
 
-const playlist = [
-    {t:'Viral omek terbaru', s:'https://cdn2.videy.co/83eHW7VY1.mp4'},
-    {t:'Trending Sosmed 2026', s:'https://cdn2.videy.co/IEPIoJ7H1.mp4'},
-    {t:'Video Heboh Hari Ini', s:'https://cdn2.videy.co/yrY2QxqP1.mp4'},
-    {t:'Update Koleksi Viral', s:'https://cdn2.videy.co/TBYaIIhy2.mp4'},
-    {t:'Koleksi Terbaru HD', s:'https://cdn2.videy.co/9ILaoDAd1.mp4'},
-    {t:'Gak Nyangka Banget', s:'https://cdn2.videy.co/J4g20h9P1.mp4'},
-    {t:'Full Video Viral', s:'https://cdn2.videy.co/zYNf8thb1.mp4'},
-    {t:'Makin Rame Update', s:'https://cdn2.videy.co/GQNleLmh1.mp4'}
+const videos = [
+  {emoji:'🎬', title:'Viral omek', views:'45K', src:'https://cdn2.videy.co/83eHW7VY1.mp4'},
+  {emoji:'🎵', title:'Trending Sosmed', views:'128K', src:'https://cdn2.videy.co/IEPIoJ7H1.mp4'},
+  {emoji:'🍳', title:'Update Baru 1', views:'23K', src:'https://cdn2.videy.co/yrY2QxqP1.mp4'},
+  {emoji:'💪', title:'Koleksi Viral 2026', views:'67K', src:'https://cdn2.videy.co/TBYaIIhy2.mp4'},
+  {emoji:'📱', title:'Viral Terbaru 2026', views:'89K', src:'https://cdn2.videy.co/9ILaoDAd1.mp4'},
+  {emoji:'💼', title:'Gokil Video Viral', views:'56K', src:'https://cdn2.videy.co/J4g20h9P1.mp4'},
+  {emoji:'🎮', title:'Update HD 2026', views:'200K', src:'https://cdn2.videy.co/zYNf8thb1.mp4'},
+  {emoji:'🔥', title:'Trending Twitter', views:'124K', src:'https://cdn2.videy.co/GQNleLmh1.mp4'}
 ];
 
-let popupStep = 0;
+let popupClicks = 0;
 let popupReady = false;
-let midShown = false;
-let midReady = false;
-let midStep = 0;
+let midrollShown = false;
+let midrollClicks = 0;
+let midrollReady = false;
+
+const vid = document.getElementById('mainVideo');
+const popupOverlay = document.getElementById('popupOverlay');
 
 function init() {
-    // Generate Playlist dengan Thumbnail Otomatis (#t=0.5)
-    const container = document.getElementById('gridV');
-    container.innerHTML = playlist.map((v, i) => `
-        <div class="card" onclick="changeVideo(${i})">
-            <div class="thumb-wrap">
-                <video preload="metadata" muted>
-                    <source src="${v.s}#t=0.5" type="video/mp4">
-                </video>
-            </div>
-            <div class="card-info">
-                <div class="card-title">${v.t}</div>
-            </div>
-        </div>
-    `).join('');
+  const grid = document.getElementById('videoGrid');
+  grid.innerHTML = videos.map((v, i) => `
+    <div class="rel-card ${i===0?'active':''}" id="vid-${i}" onclick="playVideo(${i})">
+      <div class="rel-thumb">${v.emoji}</div>
+      <div class="rel-title">${v.title}</div>
+    </div>
+  `).join('');
 
-    // Timer Popup Awal
-    let count = 5;
-    const secDisplay = document.getElementById('sec');
-    
-    const countdown = setInterval(() => {
-        count--;
-        if (secDisplay) secDisplay.innerText = count;
-        
-        if (count <= 0) {
-            clearInterval(countdown);
-            popupReady = true;
-            document.getElementById('popupCloseFab').classList.add('ready');
-            document.getElementById('popupStatus').innerHTML = "Klik tombol silang untuk mulai!";
-        }
-    }, 1000);
+  startPopupTimer();
 }
 
-function handlePopupClick() {
-    if(!popupReady) return;
-    popupStep++;
-    if(popupStep === 1) {
-        window.open(SMARTLINK, '_blank'); // Klik pertama buka smartlink
-        document.getElementById('popupStatus').innerHTML = "<b style='color:var(--red)'>Klik 1x lagi untuk tutup!</b>";
-    } else {
-        document.getElementById('popupOverlay').style.display = 'none';
-        document.getElementById('mainVid').play();
+function playVideo(i) {
+  const v = videos[i];
+  document.getElementById('videoSrc').src = v.src;
+  document.getElementById('activeTitle').textContent = '🎬 ' + v.title;
+  document.getElementById('viewCount').textContent = v.views;
+  
+  document.querySelectorAll('.rel-card').forEach(el => el.classList.remove('active'));
+  document.getElementById(`vid-${i}`).classList.add('active');
+  
+  vid.load();
+  vid.play();
+  midrollShown = false; 
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function startPopupTimer() {
+  let n = 5;
+  const t = setInterval(() => {
+    n--;
+    const arc = document.getElementById('popupArc');
+    if(arc) arc.setAttribute('stroke-dasharray', `${((5-n)/5)*120} 120`);
+    document.getElementById('popupNum').textContent = n;
+    if(n <= 0) {
+      clearInterval(t);
+      popupReady = true;
+      document.getElementById('popupCloseFab').classList.add('ready');
+      document.getElementById('popupInfo').innerHTML = "Klik ✕ untuk menutup";
     }
+  }, 1000);
 }
 
-function changeVideo(i) {
-    const v = playlist[i];
-    const vid = document.getElementById('mainVid');
-    document.getElementById('vidSrc').src = v.s;
-    document.getElementById('vTitle').innerText = "🎬 " + v.t;
-    vid.load();
+function handlePopupClick(e) {
+  if(!popupReady) return;
+  popupClicks++;
+  if(popupClicks === 1) {
+    window.open(SMARTLINK, '_blank');
+    document.getElementById('popupInfo').innerHTML = "<b style='color:var(--red)'>Klik ✕ sekali lagi!</b>";
+  } else {
+    popupOverlay.style.display = 'none';
     vid.play();
-    midShown = false;
-    window.scrollTo({top:0, behavior:'smooth'});
+  }
 }
 
-// Iklan Tengah Video (Time Update)
-const mainVid = document.getElementById('mainVid');
-mainVid.addEventListener('timeupdate', () => {
-    if(!midShown && mainVid.duration > 0 && (mainVid.currentTime / mainVid.duration) >= 0.3) {
-        midShown = true;
-        mainVid.pause();
-        document.getElementById('midrollOverlay').classList.remove('hidden');
-        
-        let count = 5;
-        const t = setInterval(() => {
-            count--;
-            document.getElementById('mSec').innerText = count;
-            if(count <= 0) {
-                clearInterval(t);
-                midReady = true;
-                document.getElementById('midrollBtn').classList.add('ready');
-                document.getElementById('midrollBtn').innerText = "Lewati Iklan";
-            }
-        }, 1000);
-    }
+vid.addEventListener('timeupdate', () => {
+  if(!midrollShown && vid.duration > 0 && (vid.currentTime / vid.duration) >= 0.3) {
+    midrollShown = true;
+    vid.pause();
+    document.getElementById('midrollOverlay').classList.remove('hidden');
+    
+    let n = 5;
+    const btn = document.getElementById('mrSkipBtn');
+    const timer = setInterval(() => {
+      n--;
+      document.getElementById('mrNum').textContent = n;
+      if(n <= 0) {
+        clearInterval(timer);
+        midrollReady = true;
+        btn.classList.add('ready');
+        btn.textContent = "Lewati Iklan";
+      }
+    }, 1000);
+  }
 });
 
-function handleMidrollClick() {
-    if(!midReady) return;
-    midStep++;
-    if(midStep === 1) {
-        window.open(SMARTLINK, '_blank'); // Klik pertama buka smartlink
-        document.getElementById('midrollBtn').innerText = "Konfirmasi Lewati";
-    } else {
-        document.getElementById('midrollOverlay').classList.add('hidden');
-        mainVid.play();
-        midStep = 0;
-    }
+function handleMidrollClick(e) {
+  if(!midrollReady) return;
+  midrollClicks++;
+  const btn = document.getElementById('mrSkipBtn');
+
+  if(midrollClicks === 1) {
+    window.open(SMARTLINK, '_blank');
+    btn.textContent = "Konfirmasi Lewati";
+    btn.style.background = "var(--green)";
+  } else {
+    document.getElementById('midrollOverlay').classList.add('hidden');
+    vid.play();
+    midrollClicks = 0;
+  }
 }
 
 window.onload = init;
