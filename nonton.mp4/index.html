@@ -3,62 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>VidPlay — Streaming HD Gratis</title>
+<title>VidPlay — Streaming Premium HD</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-    /* CSS OPTIMIZED FOR ADS & MOBILE */
+    /* CSS OPTIMIZED FOR ADS, BLUR, & TELEGRAM */
     *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    :root{--bg:#050508;--surface:#101018;--border:#1f1f2e;--text:#f0f0f0;--accent:#3b82f6;}
+    :root{--bg:#050508;--surface:#101018;--border:#1f1f2e;--text:#f0f0f0;--accent:#3b82f6;--tele:#0088cc;}
     body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden}
 
-    nav{position:sticky;top:0;z-index:1000;background:rgba(5,5,8,0.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:15px;text-align:center;}
-    .nav-logo{font-weight:800;font-size:1.4rem;text-transform:uppercase;letter-spacing:-1px}
+    /* NAV DENGAN TOMBOL TELEGRAM */
+    nav{position:sticky;top:0;z-index:1000;background:rgba(5,5,8,0.8);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 15px;display:flex;justify-content:space-between;align-items:center;}
+    .nav-logo{font-weight:800;font-size:1.2rem;text-transform:uppercase;letter-spacing:-1px}
     .nav-logo span{color:var(--accent)}
+    
+    .btn-tele{
+        background:var(--tele);
+        color:white;
+        text-decoration:none;
+        padding:8px 16px;
+        border-radius:20px;
+        font-size:12px;
+        font-weight:700;
+        display:flex;
+        align-items:center;
+        gap:6px;
+        transition:0.3s;
+    }
+    .btn-tele:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0, 136, 204, 0.4);}
 
     .main{max-width:1100px;margin:0 auto;padding:12px;display:grid;grid-template-columns:1fr 320px;gap:20px;}
     @media(max-width:900px){ .main{grid-template-columns:1fr;} }
 
     /* PLAYER AREA */
-    .player-wrap{position:relative;background:#000;border-radius:12px;overflow:hidden;aspect-ratio:16/9;width:100%;}
+    .player-wrap{position:relative;background:#000;border-radius:12px;overflow:hidden;aspect-ratio:16/9;width:100%;box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
     video{width:100%;height:100%;display:block;object-fit:contain}
 
-    /* POPUP OVERLAY (TANPA TOMBOL X) */
-    #popupOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.98);display:flex;align-items:center;justify-content:center;z-index:99999;}
-    #popupBox{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:min(350px,90vw);padding:20px;text-align:center;}
+    /* POPUP OVERLAY WITH BLUR */
+    #popupOverlay{position:fixed;inset:0;background:rgba(5,5,8,0.6);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);display:flex;align-items:center;justify-content:center;z-index:99999;}
+    #popupBox{background:var(--surface);border:1px solid var(--border);border-radius:24px;width:min(350px,95vw);padding:24px;text-align:center;}
 
     /* GRID PLAYLIST */
     .section-title{font-size:1rem;font-weight:700;margin:20px 0 10px;padding-left:10px;border-left:3px solid var(--accent)}
     .video-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:12px;}
     @media(min-width:600px){ .video-grid{grid-template-columns:repeat(3, 1fr);} }
 
-    .card{background:var(--surface);border-radius:10px;overflow:hidden;border:1px solid var(--border);cursor:pointer}
+    .card{background:var(--surface);border-radius:10px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition: transform 0.2s;}
+    .card:active{transform: scale(0.95);}
     .thumb-wrap{aspect-ratio:16/9;background:#000;position:relative;overflow:hidden}
     .thumb-wrap video{width:100%;height:100%;object-fit:cover;opacity:0.8}
     .card-info{padding:10px}
     .card-title{font-size:0.85rem;font-weight:600;line-height:1.4;}
 
+    /* PAGINATION */
+    .pagination{display:flex; justify-content:center; gap:10px; margin:25px 0;}
+    .page-btn{background:var(--surface); border:1px solid var(--border); color:var(--text); padding:10px 18px; border-radius:10px; cursor:pointer; font-weight:700; transition:0.3s;}
+    .page-btn.active{background:var(--accent); border-color:var(--accent); box-shadow:0 0 15px rgba(59, 130, 246, 0.5);}
+
     /* MIDROLL OVERLAY */
-    #midrollOverlay{position:absolute;inset:0;background:rgba(0,0,0,0.95);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;}
+    #midrollOverlay{position:absolute;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;}
     .hidden{display:none !important}
-    .btn-continue{background:var(--accent);color:#fff;border:none;padding:14px 28px;border-radius:8px;font-weight:700;margin-top:15px;cursor:pointer;font-size:1rem;box-shadow:0 0 15px rgba(59, 130, 246, 0.5);}
+    .btn-continue{background:var(--accent);color:#fff;border:none;padding:16px 32px;border-radius:12px;font-weight:800;margin-top:20px;cursor:pointer;font-size:1.1rem;}
 </style>
 </head>
 <body>
 
+<!-- POPUP AWAL -->
 <div id="popupOverlay">
     <div id="popupBox">
-        <p style="font-size:10px;color:#64748b;margin-bottom:12px;letter-spacing:1px">MEMUAT SERVER HD...</p>
-        <div style="min-height:250px; background:#000; border-radius:8px; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+        <p style="font-size:11px;color:#3b82f6;margin-bottom:15px;letter-spacing:2px;font-weight:700;">CONNECTING TO SECURE SERVER</p>
+        <div style="min-height:250px; background:#000; border-radius:12px; display:flex; align-items:center; justify-content:center; overflow:hidden; border: 1px solid #27272a;">
             <script type="text/javascript">
                 atOptions = { 'key' : '5587dc9d7bd7fe1a092dd063f078236e', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
             </script>
             <script type="text/javascript" src="https://www.highperformanceformat.com/5587dc9d7bd7fe1a092dd063f078236e/invoke.js"></script>
         </div>
-        <p style="margin-top:20px; font-size:14px;">Video akan diputar dalam <span id="sec" style="color:var(--accent); font-weight:800;">5</span> detik</p>
+        <p style="margin-top:20px; font-size:14px; color: #94a3b8;">Menyiapkan akses dalam <span id="sec" style="color:var(--accent); font-weight:800;">5</span> detik</p>
     </div>
 </div>
 
-<nav><div class="nav-logo">VID<span>PLAY</span></div></nav>
+<nav>
+    <div class="nav-logo">VID<span>PLAY</span></div>
+    <a href="https://t.me/Videyy0" target="_blank" class="btn-tele">
+        <svg width="16" height="16" fill="white" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.2-.08-.06-.19-.04-.27-.02-.11.02-1.93 1.23-5.46 3.62-.51.35-.98.52-1.4.51-.46-.01-1.35-.26-2.01-.48-.81-.27-1.45-.42-1.39-.88.03-.24.36-.48.99-.74 3.86-1.68 6.43-2.79 7.72-3.33 3.67-1.53 4.43-1.8 4.93-1.8.11 0 .35.03.51.15.13.1.17.23.19.33.02.09.03.24.02.37z"/></svg>
+        JOIN TELEGRAM
+    </a>
+</nav>
 
 <div class="main">
     <div class="content-left">
@@ -68,30 +97,33 @@
             </video>
 
             <div id="midrollOverlay" class="hidden">
-                <p style="font-weight:bold; color:white; font-size:1.1rem; margin-bottom:5px;">IKLAN SPONSOR</p>
-                <p style="color:#64748b; font-size:0.8rem; margin-bottom:15px;">Klik tombol di bawah untuk melanjutkan video</p>
-                
-                <div style="margin:10px 0; min-height:250px; width:300px; background:#000; border-radius:8px;">
+                <h2 style="font-weight:800; color:white; font-size:1.3rem;">Satu Langkah Lagi</h2>
+                <p style="color:#cbd5e1; font-size:0.85rem; margin-bottom:20px;">Klik tombol di bawah untuk lanjut nonton</p>
+                <div style="margin:10px 0; min-height:250px; width:300px; background:#000; border-radius:12px;">
                     <script async="async" data-cfasync="false" src="https://pl29122188.profitablecpmratenetwork.com/ba3a9b5f88598e3d66f38ec2b3506a15/invoke.js"></script>
                     <div id="container-ba3a9b5f88598e3d66f38ec2b3506a15"></div>
                 </div>
-
-                <button class="btn-continue" onclick="handleMidrollClick()">Lanjutkan Menonton</button>
+                <button class="btn-continue" onclick="handleMidrollClick()">LANJUTKAN VIDEO</button>
             </div>
         </div>
 
-        <div style="background:var(--surface); padding:15px; border-radius:12px; margin-top:15px; border:1px solid var(--border)">
-            <h1 id="vTitle" style="font-size:1.1rem">🎬 Viral Terbaru HD</h1>
-            <p style="color:#64748b; font-size:0.8rem; margin-top:5px">Server Utama • Kualitas 1080p</p>
+        <div style="background:var(--surface); padding:20px; border-radius:12px; margin-top:15px; border:1px solid var(--border)">
+            <h1 id="vTitle" style="font-size:1.2rem; font-weight: 700;">🎬 Viral Terbaru HD</h1>
         </div>
 
-        <div class="section-title">Nonton Juga Video Ini</div>
+        <div class="section-title">Katalog Video</div>
         <div class="video-grid" id="gridV"></div>
+
+        <div class="pagination">
+            <button onclick="showPage(1)" class="page-btn active">1</button>
+            <button onclick="showPage(2)" class="page-btn">2</button>
+            <button onclick="showPage(3)" class="page-btn">3</button>
+        </div>
     </div>
 
     <div class="sidebar">
         <div style="background:var(--surface); padding:15px; border-radius:12px; text-align:center; position:sticky; top:80px; border:1px solid var(--border)">
-            <p style="font-size:10px; color:#64748b; margin-bottom:10px">SPONSORED AD</p>
+            <p style="font-size:10px; color:#64748b; margin-bottom:12px;">ADVERTISEMENT</p>
             <script type="text/javascript">
                 atOptions = { 'key' : '5587dc9d7bd7fe1a092dd063f078236e', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };
             </script>
@@ -101,8 +133,17 @@
 </div>
 
 <script>
-// LINK TUJUAN (SMARTLINK ANDA)
-const SMARTLINK = "https://omg10.com/4/10997217";
+/** 
+ * CONFIG & PLAYLIST
+ */
+const ADS_CONFIG = {
+    OUTSIDE_ID: "https://www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba", 
+    INSIDE_ID: "https://omg10.com/4/10997217", 
+    DEFAULT: "https://omg10.com/4/10997217"
+};
+
+let CURRENT_SMARTLINK = ADS_CONFIG.DEFAULT;
+const itemsPerPage = 6; 
 
 const playlist = [
     {t:'Viral omek terbaru', s:'https://cdn2.videy.co/nUcmf2PL1.mp4'},
@@ -115,33 +156,52 @@ const playlist = [
     {t:'Asian amateur 7', s:'https://cdn2.videy.co/yrY2QxqP1.mp4'},
     {t:'Asian amateur 8', s:'https://cdn2.videy.co/IEPIoJ7H1.mp4'},
     {t:'Asian amateur 9', s:'https://cdn2.videy.co/83eHW7VY1.mp4'},
+    {t:'Asian amateur 11', s:'https://videy.co/v/?id=dH48vvEC1'},
+    {t:'Asian amateur 12', s:'https://videy.co/v/?id=bc61fuZP1'},
+    {t:'Asian amateur 13', s:'https://videy.co/v/?id=mFnxCmY01'},
+    {t:'Asian amateur 14', s:'https://videy.co/v/?id=QUiRKRP21'},
+    {t:'Asian amateur 15', s:'https://videy.co/v/?id=rU5onNjl1'},
+    {t:'Asian amateur 16', s:'https://videy.co/v/?id=WzxKiyto1'},
+    {t:'Asian amateur 17', s:'https://cdn.videy.co/xoP1pA4p1.mp4'},
+    {t:'Asian amateur 18', s:'https://videy.co/v/?id=fJ3PREyw1'},
+    {t:'Asian amateur 19', s:'https://cdn.videy.co/FeS9gyTR1.mp4'},
+    {t:'Asian amateur 20', s:'https://cdn.videy.co/nwVAUgXH1.mp4'},
+    {t:'Asian amateur 21', s:'https://cdn.videy.co/hg5sHEKB1.mp4'}
 ];
 
 const mainVid = document.getElementById('mainVid');
 let midShown = false;
 
-function init() {
-    // Generate Playlist dengan Thumbnail Otomatis dari frame video
+function fetchGeo() {
+    fetch('https://get.geojs.io/v1/ip/country.json').then(res => res.json()).then(data => {
+        CURRENT_SMARTLINK = (data.country === "ID") ? ADS_CONFIG.INSIDE_ID : ADS_CONFIG.OUTSIDE_ID;
+    });
+}
+
+function showPage(pageNumber) {
     const container = document.getElementById('gridV');
-    container.innerHTML = playlist.map((v, i) => `
-        <div class="card" onclick="changeVideo(${i})">
-            <div class="thumb-wrap">
-                <video preload="metadata" muted>
-                    <source src="${v.s}#t=1" type="video/mp4">
-                </video>
-            </div>
-            <div class="card-info">
-                <div class="card-title">${v.t}</div>
-            </div>
+    const start = (pageNumber - 1) * itemsPerPage;
+    const pagedVideos = playlist.slice(start, start + itemsPerPage);
+
+    container.innerHTML = pagedVideos.map((v) => `
+        <div class="card" onclick="changeVideo(${playlist.indexOf(v)})">
+            <div class="thumb-wrap"><video preload="metadata" muted><source src="${v.s}#t=1" type="video/mp4"></video></div>
+            <div class="card-info"><div class="card-title">${v.t}</div></div>
         </div>
     `).join('');
 
-    // Timer Penutupan Otomatis Popup Awal (5 Detik)
+    document.querySelectorAll('.page-btn').forEach((btn, index) => {
+        btn.classList.toggle('active', index + 1 === pageNumber);
+    });
+}
+
+function init() {
+    fetchGeo();
+    showPage(1);
     let count = 5;
-    const secDisplay = document.getElementById('sec');
     const countdown = setInterval(() => {
         count--;
-        if (secDisplay) secDisplay.innerText = count;
+        if (document.getElementById('sec')) document.getElementById('sec').innerText = count;
         if (count <= 0) {
             clearInterval(countdown);
             document.getElementById('popupOverlay').style.display = 'none';
@@ -154,29 +214,25 @@ function changeVideo(i) {
     const v = playlist[i];
     document.getElementById('vidSrc').src = v.s;
     document.getElementById('vTitle').innerText = "🎬 " + v.t;
-    mainVid.load();
-    mainVid.play();
+    mainVid.load(); mainVid.play();
     midShown = false;
     window.scrollTo({top:0, behavior:'smooth'});
 }
 
-// Deteksi waktu video 30% untuk memicu iklan
 mainVid.addEventListener('timeupdate', () => {
-    if(!midShown && mainVid.duration > 0 && (mainVid.currentTime / mainVid.duration) >= 0.3) {
+    if(!midShown && mainVid.duration > 0 && (mainVid.currentTime / mainVid.duration) >= 0.35) {
         midShown = true;
         mainVid.pause();
         document.getElementById('midrollOverlay').classList.remove('hidden');
     }
 });
 
-// Fungsi saat tombol "Lanjutkan Menonton" diklik
 function handleMidrollClick() {
-    // Membuka Smartlink Anda di tab baru
-    window.open(SMARTLINK, '_blank');
-    
-    // Menutup overlay iklan dan melanjutkan video
-    document.getElementById('midrollOverlay').classList.add('hidden');
-    mainVid.play();
+    window.open(CURRENT_SMARTLINK, '_blank');
+    setTimeout(() => {
+        document.getElementById('midrollOverlay').classList.add('hidden');
+        mainVid.play();
+    }, 500);
 }
 
 window.onload = init;
