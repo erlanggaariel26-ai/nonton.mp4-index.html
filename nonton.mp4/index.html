@@ -134,15 +134,16 @@
 
 <script>
 /** 
- * CONFIG & PLAYLIST
+ * CONFIG & PLAYLIST - UPDATED FOR TIER 1
  */
 const ADS_CONFIG = {
-    OUTSIDE_ID: "https://www.profitablecpmratenetwork.com/xq2tnehc?key=f6d9d1941c37295d79edcc5179f4f8ba", 
-    INSIDE_ID: "https://omg10.com/4/10997217", 
-    DEFAULT: "https://omg10.com/4/10997217"
+    // Link Adsterra baru Anda
+    DEFAULT_LINK: "https://www.profitablecpmratenetwork.com/r1rnzr9p3h?key=b4bfb0204d2cfb1b5578d86863788df4", 
+    TIER1_LINK: "https://www.profitablecpmratenetwork.com/r1rnzr9p3h?key=b4bfb0204d2cfb1b5578d86863788df4",
+    INDO_LINK: "https://omg10.com/4/10997217"
 };
 
-let CURRENT_SMARTLINK = ADS_CONFIG.DEFAULT;
+let CURRENT_SMARTLINK = ADS_CONFIG.DEFAULT_LINK;
 const itemsPerPage = 6; 
 
 const playlist = [
@@ -156,14 +157,14 @@ const playlist = [
     {t:'Asian amateur 7', s:'https://cdn2.videy.co/yrY2QxqP1.mp4'},
     {t:'Asian amateur 8', s:'https://cdn2.videy.co/IEPIoJ7H1.mp4'},
     {t:'Asian amateur 9', s:'https://cdn2.videy.co/83eHW7VY1.mp4'},
-    {t:'Asian amateur 11', s:'https://videy.co/v/?id=dH48vvEC1'},
-    {t:'Asian amateur 12', s:'https://videy.co/v/?id=bc61fuZP1'},
-    {t:'Asian amateur 13', s:'https://videy.co/v/?id=mFnxCmY01'},
-    {t:'Asian amateur 14', s:'https://videy.co/v/?id=QUiRKRP21'},
-    {t:'Asian amateur 15', s:'https://videy.co/v/?id=rU5onNjl1'},
-    {t:'Asian amateur 16', s:'https://videy.co/v/?id=WzxKiyto1'},
+    {t:'Asian amateur 11', s:'https://cdn2.videy.co/dH48vvEC1.mp4'},
+    {t:'Asian amateur 12', s:'https://cdn2.videy.co/bc61fuZP1.mp4'},
+    {t:'Asian amateur 13', s:'https://cdn2.videy.co/mFnxCmY01.mp4'},
+    {t:'Asian amateur 14', s:'https://cdn2.videy.co/QUiRKRP21.mp4'},
+    {t:'Asian amateur 15', s:'https://cdn2.videy.co/rU5onNjl1.mp4'},
+    {t:'Asian amateur 16', s:'https://cdn2.videy.co/WzxKiyto1.mp4'},
     {t:'Asian amateur 17', s:'https://cdn.videy.co/xoP1pA4p1.mp4'},
-    {t:'Asian amateur 18', s:'https://videy.co/v/?id=fJ3PREyw1'},
+    {t:'Asian amateur 18', s:'https://cdn2.videy.co/fJ3PREyw1.mp4'},
     {t:'Asian amateur 19', s:'https://cdn.videy.co/FeS9gyTR1.mp4'},
     {t:'Asian amateur 20', s:'https://cdn.videy.co/nwVAUgXH1.mp4'},
     {t:'Asian amateur 21', s:'https://cdn.videy.co/hg5sHEKB1.mp4'}
@@ -172,10 +173,24 @@ const playlist = [
 const mainVid = document.getElementById('mainVid');
 let midShown = false;
 
+// Mendeteksi Lokasi & Mengatur SmartLink
 function fetchGeo() {
-    fetch('https://get.geojs.io/v1/ip/country.json').then(res => res.json()).then(data => {
-        CURRENT_SMARTLINK = (data.country === "ID") ? ADS_CONFIG.INSIDE_ID : ADS_CONFIG.OUTSIDE_ID;
-    });
+    fetch('https://get.geojs.io/v1/ip/country.json')
+        .then(res => res.json())
+        .then(data => {
+            const country = data.country;
+            const tier1 = ["US", "GB", "CA", "AU", "DE", "FR"]; 
+
+            if (tier1.includes(country)) {
+                CURRENT_SMARTLINK = ADS_CONFIG.TIER1_LINK;
+                console.log("Tier 1 Detected: " + country);
+            } else if (country === "ID") {
+                CURRENT_SMARTLINK = ADS_CONFIG.INDO_LINK;
+            } else {
+                CURRENT_SMARTLINK = ADS_CONFIG.DEFAULT_LINK;
+            }
+        })
+        .catch(() => { CURRENT_SMARTLINK = ADS_CONFIG.DEFAULT_LINK; });
 }
 
 function showPage(pageNumber) {
@@ -205,7 +220,7 @@ function init() {
         if (count <= 0) {
             clearInterval(countdown);
             document.getElementById('popupOverlay').style.display = 'none';
-            mainVid.play();
+            mainVid.play().catch(() => { console.log("Autoplay blocked"); });
         }
     }, 1000);
 }
@@ -214,11 +229,13 @@ function changeVideo(i) {
     const v = playlist[i];
     document.getElementById('vidSrc').src = v.s;
     document.getElementById('vTitle').innerText = "🎬 " + v.t;
-    mainVid.load(); mainVid.play();
+    mainVid.load(); 
+    mainVid.play();
     midShown = false;
     window.scrollTo({top:0, behavior:'smooth'});
 }
 
+// Munculkan Iklan di 35% Durasi Video
 mainVid.addEventListener('timeupdate', () => {
     if(!midShown && mainVid.duration > 0 && (mainVid.currentTime / mainVid.duration) >= 0.35) {
         midShown = true;
